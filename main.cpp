@@ -1,14 +1,13 @@
 /**
  * @file main.cpp
  * @author Artem Bondartsov (erithion@gmail.com)
- * @brief Example of using easy_states state machine
+ * @brief Example of use of easy_states
  * @version 0.1
  * @date 2025-03-22
  * 
  * @copyright Copyright (c) 2025
  */
 #include "easy_states.hpp"
-#include <numeric>
 #include <type_traits>
 #include <fmt/format.h>
 #include <magic_enum.hpp>
@@ -46,19 +45,17 @@ using State = Const<States, S>;
 template <Events E>
 using Event = Const<Events, E>;
 
-State<States::Locked> enter(State<States::Locked>  src, Event<Events::Push> evt)
+State<States::Locked>   enter(State<States::Locked>     src, Event<Events::Push>    evt)
 {
     fmt::println("{} --[{}]--> {}", src.value, evt.value, "Locked");
     return {};
 }
-
-State<States::Unlocked>    enter(State<States::Locked> src, Event<Events::Coin>     evt)
+State<States::Unlocked> enter(State<States::Locked>     src, Event<Events::Coin>    evt)
 {
     fmt::println("{} --[{}]--> {}", src.value, evt.value, "Unlocked");
     return {};
 }
-
-State<States::Locked>  enter(State<States::Unlocked> src, Event<Events::Push>   evt)
+State<States::Locked>   enter(State<States::Unlocked>   src, Event<Events::Push>    evt)
 {
     fmt::println("{} --[{}]--> {}", src.value, evt.value, "Locked");
     return {};
