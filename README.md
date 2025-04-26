@@ -6,19 +6,10 @@ A tiny header-only library allowing to define a state machine using solely a fun
 
 Given arbitrary enums `States` and `Events`, transitions are inferred from the set of overloaded functions `enter`, which, thus, act as a transition table and define a state machine:
 
-<div hidden>
+```mermaid
+    state_1-->state_2:event_1;
+    state_1-->state_3:event_2;
 ```
-@startuml Diagram
-
-[*] --> state_1
-state_1 --> state_2 : event_1
-state_1 --> state_3 : event_2
-
-@enduml
-```
-</div>
-
-![](Diagram.svg)
 
 ```cpp
 
