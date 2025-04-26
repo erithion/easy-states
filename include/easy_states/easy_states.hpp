@@ -28,7 +28,7 @@ namespace easy_states
         /**
          * @brief Given an Enum { id_1, ..., id_i, ..., id_n }, the call enum_to_variant(id_i)
          * returns std::variant<Const<Enum, id_1>, ..., Const<Enum, id_i>, ..., Const<Enum, id_n>>
-         * instance set to Const<id_i>{}.
+         * instance set to Const<Enum, id_i>{}.
          * 
          * @prerequisite: Specialized std::numeric_limits<Enum>::max().
          */

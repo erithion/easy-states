@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(easy-states VERSION 1.0 LANGUAGES CXX)
 
-# Use C++17 (or later)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add examples
 option(BUILD_EXAMPLES "Build examples" ON)
 option(WITH_FMT "Include {fmt} library" ON)
 
@@ -21,7 +19,6 @@ if(WITH_FMT)
     target_compile_definitions(easy_states INTERFACE WITH_FMT)
     find_package(fmt REQUIRED)
 endif()
-
 
 # Install rules (optional)
 install(DIRECTORY include/ DESTINATION include)

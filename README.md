@@ -4,9 +4,14 @@ A tiny header-only library allowing to define a state machine using solely a fun
 
 ## Example
 
-Given arbitrary enums `States` and `Events`, transitions are inferred from the set of overloaded functions `enter`, which, thus, act as a transition table and define a state machine:
+![UML Diagram](https://www.plantuml.com/plantuml/png/SoWkIImgAStDuG8oIb8Lm6Iy8GhFY8iBAgoWgsi74rImKaWjIyqh0Ih6b3M6oG8rEwJcfG0j0000)
+
+
+Given arbitrary enums `States` and `Events`, transitions are inferred from the set of overloaded functions `enter`, which, thus, act as a transition table defining a state machine
+
 
 ```cpp
+
 #include "easy_states/easy_states.hpp"
 
 enum States

@@ -12,6 +12,7 @@
 #include <fmt/format.h>
 #include <magic_enum.hpp>
 
+// States and events
 enum struct States
 {
     Locked = 0,
@@ -24,12 +25,14 @@ enum struct Events
     Coin
 };
 
+// Enums used in easy_states::next must specialize std::numeric_limits indicating their last value
 template <>
 constexpr States std::numeric_limits<States>::max() { return States::Unlocked; }
 
 template <>
 constexpr Events std::numeric_limits<Events>::max() { return Events::Coin; }
 
+// Formatter for any enum
 template <typename Enum>
 struct fmt::formatter<Enum, std::enable_if_t<std::is_enum_v<Enum>, char>> : fmt::formatter<std::string_view>
 {
@@ -39,12 +42,15 @@ struct fmt::formatter<Enum, std::enable_if_t<std::is_enum_v<Enum>, char>> : fmt:
     }
 };
 
+// For the sake of shorter names and clarity
 template <States S>
 using State = easy_states::Const<States, S>;
 
 template <Events E>
 using Event = easy_states::Const<Events, E>;
 
+// Simultaneously, a transition table and actions on state entering
+// *** Target state **************** Source state ******************* Event *************
 State<States::Locked>   enter(State<States::Locked>     src, Event<Events::Push>    evt)
 {
     fmt::println("{} --[{}]--> {}", src.value, evt.value, "Locked");
