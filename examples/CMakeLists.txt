@@ -1,4 +1,3 @@
-# List of examples
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 add_executable(example main.cpp)
