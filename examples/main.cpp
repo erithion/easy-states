@@ -7,7 +7,7 @@
  * 
  * @copyright Copyright (c) 2025
  */
-#include "easy_states.hpp"
+#include "easy_states/easy_states.hpp"
 #include <type_traits>
 #include <fmt/format.h>
 #include <magic_enum.hpp>
@@ -40,10 +40,10 @@ struct fmt::formatter<Enum, std::enable_if_t<std::is_enum_v<Enum>, char>> : fmt:
 };
 
 template <States S>
-using State = Const<States, S>;
+using State = easy_states::Const<States, S>;
 
 template <Events E>
-using Event = Const<Events, E>;
+using Event = easy_states::Const<Events, E>;
 
 State<States::Locked>   enter(State<States::Locked>     src, Event<Events::Push>    evt)
 {
@@ -65,14 +65,14 @@ int main()
 {
     auto state = States::Locked;
 
-    state = next(state, Events::Push);
-    state = next(state, Events::Coin);
-    state = next(state, Events::Push);
-    state = next(state, Events::Push);
+    state = easy_states::next(state, Events::Push);
+    state = easy_states::next(state, Events::Coin);
+    state = easy_states::next(state, Events::Push);
+    state = easy_states::next(state, Events::Push);
 
-    state = next(state, Events::Coin);
-    state = next(state, Events::Coin);
-    state = next(state, Events::Push);
-    state = next(state, Events::Push);
+    state = easy_states::next(state, Events::Coin);
+    state = easy_states::next(state, Events::Coin);
+    state = easy_states::next(state, Events::Push);
+    state = easy_states::next(state, Events::Push);
     return 0;
 }
