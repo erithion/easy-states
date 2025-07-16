@@ -50,20 +50,23 @@ template <Events E>
 using Event = easy_states::Const<Events, E>;
 
 // Simultaneously, a transition table and actions on state entering
-// *** Target state **************** Source state ******************* Event *************
-State<States::Locked>   enter(State<States::Locked>     src, Event<Events::Push>    evt)
+// *** Target state **************** Source state ******************* Event ************* Arbitrary types
+State<States::Locked>   enter(State<States::Locked>     src, Event<Events::Push>    evt, int v, bool b)
 {
-    fmt::println("{} --[{}]--> {}", src.value, evt.value, "Locked");
+    using Ret = decltype(enter(src, evt, v, b));
+    fmt::println("{} --[{}]--> {}, v={}, b={}", src.value, evt.value,  Ret{}.value, v, b);
     return {};
 }
-State<States::Unlocked> enter(State<States::Locked>     src, Event<Events::Coin>    evt)
+State<States::Unlocked> enter(State<States::Locked>     src, Event<Events::Coin>    evt, int v, bool b)
 {
-    fmt::println("{} --[{}]--> {}", src.value, evt.value, "Unlocked");
+    using Ret = decltype(enter(src, evt, v, b));
+    fmt::println("{} --[{}]--> {}, v={}, b={}", src.value, evt.value,  Ret{}.value, v, b);
     return {};
 }
-State<States::Locked>   enter(State<States::Unlocked>   src, Event<Events::Push>    evt)
+State<States::Locked>   enter(State<States::Unlocked>   src, Event<Events::Push>    evt, int v, bool b)
 {
-    fmt::println("{} --[{}]--> {}", src.value, evt.value, "Locked");
+    using Ret = decltype(enter(src, evt, v, b));
+    fmt::println("{} --[{}]--> {}, v={}, b={}", src.value, evt.value,  Ret{}.value, v, b);
     return {};
 }
 
@@ -71,14 +74,14 @@ int main()
 {
     auto state = States::Locked;
 
-    state = easy_states::next(state, Events::Push);
-    state = easy_states::next(state, Events::Coin);
-    state = easy_states::next(state, Events::Push);
-    state = easy_states::next(state, Events::Push);
+    state = easy_states::next(state, Events::Push, 1, true);
+    state = easy_states::next(state, Events::Coin, 2, false);
+    state = easy_states::next(state, Events::Push, 3, true);
+    state = easy_states::next(state, Events::Push, 4, true);
 
-    state = easy_states::next(state, Events::Coin);
-    state = easy_states::next(state, Events::Coin);
-    state = easy_states::next(state, Events::Push);
-    state = easy_states::next(state, Events::Push);
+    state = easy_states::next(state, Events::Coin, 5, true);
+    state = easy_states::next(state, Events::Coin, 6, false);
+    state = easy_states::next(state, Events::Push, 7, false);
+    state = easy_states::next(state, Events::Push, 8, false);
     return 0;
 }

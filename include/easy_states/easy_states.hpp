@@ -26,14 +26,14 @@ namespace easy_states
     namespace detail
     {
         /**
-         * @brief Given an Enum { id_1, ..., id_i, ..., id_n }, the call enum_to_variant(id_i)
+         * @brief Given an Enum { id_1, ..., id_i, ..., id_n }, the call enumToVariant(id_i)
          * returns std::variant<Const<Enum, id_1>, ..., Const<Enum, id_i>, ..., Const<Enum, id_n>>
          * instance set to Const<Enum, id_i>{}.
          * 
          * @prerequisite: Specialized std::numeric_limits<Enum>::max().
          */
         template <typename Enum>
-        constexpr auto enum_to_variant(Enum value)
+        constexpr auto enumToVariant(Enum value)
         {
             // enum must specialize std::numeric_limits::max with its maximum possible value
             constexpr auto size = uint64_t(std::numeric_limits<Enum>::max()) + 1;
@@ -85,6 +85,37 @@ namespace easy_states
         {
             exit(state, args...);
             return enter(state, event, args...).value;
-        }, detail::enum_to_variant(state), detail::enum_to_variant(event));
+        }, detail::enumToVariant(state), detail::enumToVariant(event));
     }
+
+    /**
+     * @brief When the FSM is defined in a class, this class should derive Automata
+     * 
+     * @tparam Descendant - a class deriving Automata and containing enter()/exit() declarations
+     */
+    template <typename Descendant>
+    struct Automata
+    {
+        template <typename State, typename Event, typename...Args>
+        State next(State state, Event event, Args&&...args)
+        {
+            return std::visit([this, &args...](auto&& state, auto&& event)
+            {
+                static_cast<Descendant*>(this)->exit(state, args...);
+                return static_cast<Descendant*>(this)->enter(state, event, args...).value;
+            }, detail::enumToVariant(state), detail::enumToVariant(event));
+        }
+
+        template <typename State, State S, typename...Args>
+        void exit(Const<State, S>, Args&&...) {}
+
+        template <typename State, typename Event, State S, Event E, typename...Args>
+        Const<State, S> enter(Const<State, S>, Const<Event, E>, Args&&...)
+        {
+#ifdef WITH_FMT
+            fmt::println("Default handler: Transition from '{}' by '{}' does not exist" , S, E);
+#endif
+            return {};
+        }
+    };
 }

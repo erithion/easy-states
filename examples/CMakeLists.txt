@@ -1,4 +1,6 @@
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
-add_executable(example main.cpp)
-target_link_libraries(example PRIVATE easy_states PRIVATE fmt::fmt-header-only)
+add_executable(functions_example functions_example.cpp)
+add_executable(classes_example classes_example.cpp)
+target_link_libraries(functions_example PRIVATE easy_states PRIVATE fmt::fmt-header-only)
+target_link_libraries(classes_example PRIVATE easy_states PRIVATE fmt::fmt-header-only)
